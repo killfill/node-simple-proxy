@@ -6,9 +6,8 @@
 , "main": "./lib/proxy.js"
 , "keywords": ["proxy", "http"]
 , "repository": 
-    {
-      "type": "git"
-    , "url": "http://github.com/killfill/simple-proxy.git"
-    }
+  {
+    "type": "git"
+  , "url": "http://github.com/killfill/node-simple-proxy.git"
   }
 }
