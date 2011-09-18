@@ -1,10 +1,13 @@
 { "name": "simple-proxy"
 , "description": "A Simple and minimalist http proxy for node"
-, "version": "0.0.3"
+, "version": "0.0.4"
 , "author": "Phillip Neumann <pneumann@gmail.com>"
 , "engines": { "node": "~0.4.x" }
 , "main": "./lib/proxy.js"
 , "keywords": ["proxy", "http"]
+, "bin": "./bin/proxy"
+, "dependencies": 
+  { "commander": "*" }
 , "repository": 
   {
     "type": "git"

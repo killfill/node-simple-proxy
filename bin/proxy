@@ -1,0 +1,70 @@
+#!/usr/bin/env node
+
+var http = require('http'),
+    util = require('util'),
+    url = require('url'),
+    fs = require('fs'),
+    sproxy = require('../lib/proxy')
+    com = require('commander');
+
+com
+  .version('0.1')
+  //.usage('[options] [dir]')
+  .option('-L, --listen <port>', 'listen to port [3000]', Number, 3000)
+  .option('-M, --mount <mount>',  'proxy request starting with this pathname')
+  .option('-H, --host <hostname>',   '      to this hostname')
+  .option('-P, --port <port>',   '      to this port', Number, 80)
+  .parse(process.argv);
+
+var config = {
+	listen: com.listen,
+	remoteHost: com.host,
+	remotePort: com.port,
+	mountProxy: com.mount,
+	mountRoot: com.args.shift() || '.'
+}
+
+if (!config.remoteHost || config.mountRoot=='.')
+	console.log('Tip: --help');
+
+var proxy = sproxy.createProxy({
+	remoteHost: config.remoteHost,
+	remotePort: config.remotePort
+});
+
+proxy.on('response', function(opts) {
+	console.log('Proxy: Status', opts.proxyRes.statusCode, 'for request', opts.proxyReq.method, opts.proxyReq.path);
+});
+
+http.createServer(function(req, res) {
+	var u = url.parse(req.url);
+
+	if (config.remoteHost && config.mountProxy && new RegExp('^'+config.mountProxy).test(u.pathname.substr(1)))
+		return proxy.handleRequest(req, res);
+
+	var file = config.mountRoot + u.pathname;
+	if (file.substr(file.length-1) == '/')
+		file += 'index.html';
+
+	fs.readFile(file, function(err, data) {
+		if (err) {
+			switch (err.code) {
+				case 'ENOENT':
+					res.writeHead(404);
+					res.end('404 for ' + u.pathname + '\n');
+					break;
+				default:
+					throw err;
+			}
+			return;
+		}
+
+		res.writeHead(200);
+		res.end(data);
+	});
+
+}).listen(config.listen);
+
+console.log('Serving', config.mountRoot, 'on port', config.listen);
+if (config.remoteHost)
+	console.log('Proxing', config.mountProxy, 'to', config.remoteHost + ':' + config.remotePort);
