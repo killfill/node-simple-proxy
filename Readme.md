@@ -4,7 +4,7 @@
  You can use it on your own http server, express app, or with the stand alone script.
  For examples see the examples dir.
 
- ## Instalation
+## Instalation
 
     $ npm install simple-proxy
 
@@ -26,4 +26,15 @@ page: proxy [options]
 
 ## Example
 
-  proxy -M api -H remote-api.com /var/www/the_site
+
+```  
+   $ proxy -M api -H remote-api.com /var/www/the_site
+```
+
+ This will serve the files located in /var/www/the_site to the browser on the defailt por 3000.
+ All request that begins with /api, will be proxy to remote-api.com.
+ 
+ 
+##Feedback
+
+If you need something just tell!!... :)
