@@ -1,5 +1,3 @@
-require.paths.push('../lib');
-
 var express = require('express')
   , proxy = require('proxy')
   , mime = require('mime');

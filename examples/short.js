@@ -1,5 +1,3 @@
-require.paths.push('../lib');
-
 var http = require('http')
   , proxy = require('proxy');
 
