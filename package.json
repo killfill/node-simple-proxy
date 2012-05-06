@@ -1,6 +1,6 @@
 { "name": "simple-proxy"
 , "description": "A Simple and minimalist http proxy for node"
-, "version": "0.0.6"
+, "version": "0.1.0"
 , "author": "Phillip Neumann <pneumann@gmail.com>"
 , "main": "./lib/proxy.js"
 , "keywords": ["proxy", "http"]
